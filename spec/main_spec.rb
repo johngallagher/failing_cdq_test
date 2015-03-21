@@ -14,11 +14,13 @@ describe "Application 'failing_cdq_test'" do
     cdq.reset!
   end
 
-  it 'accurately sets startedAt' do
-    test_time = Time.new(2014, 6, 2, 0, 0, 0)
-    10.times.each do
-      Entry.create(startedAt: test_time).startedAt.should == test_time
-      test_time = test_time + 1
-    end
+  it 'accurately sets startedAt for even seconds' do
+    Entry.create(startedAt: Time.new(2014, 6, 2, 0, 0, 0)).startedAt.should == Time.new(2014, 6, 2, 0, 0, 0)
+    Entry.create(startedAt: Time.new(2014, 6, 2, 0, 0, 2)).startedAt.should == Time.new(2014, 6, 2, 0, 0, 2)
+  end
+
+  it 'accurately sets startedAt for odd seconds' do
+    Entry.create(startedAt: Time.new(2014, 6, 2, 0, 0, 1)).startedAt.should == Time.new(2014, 6, 2, 0, 0, 1)
+    Entry.create(startedAt: Time.new(2014, 6, 2, 0, 0, 3)).startedAt.should == Time.new(2014, 6, 2, 0, 0, 3)
   end
 end
